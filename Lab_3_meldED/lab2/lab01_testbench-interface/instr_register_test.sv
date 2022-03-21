@@ -25,16 +25,16 @@ module instr_register_test (tb_ifc intflab);  // interface port
     intflab.read_pointer   = 5'h1F;         // initialize read pointer
     intflab.load_en        = 1'b0;          // initialize load control line
     intflab.reset_n       <= 1'b0;          // assert reset_n (active low)
-    repeat (2) @(posedge intflab.clk) ;     // hold in reset for 2 clock cycles
+    repeat (2) @intflab.cb;     // hold in reset for 2 clock cycles
     intflab.reset_n        = 1'b1;          // deassert reset_n (active low)
 
     $display("\nWriting values to register stack...");
-    @(posedge intflab.clk) intflab.load_en = 1'b1;  // enable writing to register
+    @intflab.cb intflab.load_en = 1'b1;  // enable writing to register
     repeat (3) begin
       @(posedge intflab.clk) randomize_transaction;
       @(negedge intflab.clk) print_transaction;
     end
-    @(posedge intflab.clk) intflab.load_en = 1'b0;  // turn-off writing to register
+    @intflab.cb intflab.load_en = 1'b0;  // turn-off writing to register
 
     // read back and display same three register locations
     $display("\nReading back the same register locations written...");
@@ -42,11 +42,11 @@ module instr_register_test (tb_ifc intflab);  // interface port
       // later labs will replace this loop with iterating through a
       // scoreboard to determine which addresses were written and
       // the expected values to be read back
-      @(posedge intflab.clk) intflab.read_pointer = i;
+     @intflab.cb intflab.read_pointer = i;
       @(negedge intflab.clk) print_results;
     end
 
-    @(posedge intflab.clk) ;
+     @intflab.cb ;
     $display("\n***********************************************************");
     $display(  "***  THIS IS NOT A SELF-CHECKING TESTBENCH (YET).  YOU  ***");
     $display(  "***  NEED TO VISUALLY VERIFY THAT THE OUTPUT VALUES     ***");
