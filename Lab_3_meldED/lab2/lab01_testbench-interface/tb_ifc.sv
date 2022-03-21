@@ -18,23 +18,19 @@ interface tb_ifc (input logic clk);
   instruction_t  instruction_word;
 
 clocking cb @(posedge clk);
-input reset_n;
-input load_en;
-input read_pointer;
+ output           load_en,
+ output           reset_n,
+ output       operand_a,
+ output        operand_b,
+ output        opcode,
+ output        write_pointer,
+ output       read_pointer,
+ input  instruction_word;
 
 endclocking
 
-modport test (clocking cb,output rst);
-modport tb(
-  output  logic          clk,
- output  logic          load_en,
- output  logic          reset_n,
- output  operand_t      operand_a,
- output  operand_t      operand_b,
- output  opcode_t       opcode,
- output  address_t      write_pointer,
- output  address_t      read_pointer,
- input instruction_t  instruction_word);
+modport TEST (clocking cb);
+
   // instantiate testbench and connect ports
   
 
