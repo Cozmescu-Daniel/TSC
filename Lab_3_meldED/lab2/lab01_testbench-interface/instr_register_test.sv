@@ -5,53 +5,59 @@
  * a scoreboard for self-verification.
  **********************************************************************/
 
-module instr_register_test (tb_ifc.TEST intflab);  // interface port
-
-  // user-defined types are defined in instr_register_pkg.sv
+module instr_register_test 
   import instr_register_pkg::*;
+  (
+  tb_ifc.TEST intflab
+  );
+  int seed = 555; //seed reprezinta valoarea initiala cu care se incepe randomizarea
 
-
-  int seed = 555;
-
-  initial begin
+  initial begin//timp semnal zero
     $display("\n\n***********************************************************");
     $display(    "***  THIS IS NOT A SELF-CHECKING TESTBENCH (YET).  YOU  ***");
     $display(    "***  NEED TO VISUALLY VERIFY THAT THE OUTPUT VALUES     ***");
     $display(    "***  MATCH THE INPUT VALUES FOR EACH REGISTER LOCATION  ***");
     $display(    "***********************************************************");
+    $display(  "**************************HEADER***************************\n");
+//Dif intre task si fc, in task se pot pune valori temporale (@ posedge etc)
 
     $display("\nReseting the instruction register...");
-    intflab.cb.write_pointer  = 5'h00;         // initialize write pointer
-    intflab.cb.read_pointer   = 5'h1F;         // initialize read pointer
-    intflab.cb.load_en        = 1'b0;          // initialize load control line
+    intflab.cb.write_pointer  <= 5'h00;         // initialize write pointer
+    intflab.cb.read_pointer   <= 5'h1F;         // initialize read pointer
+    intflab.cb.load_en        <= 1'b0;          // initialize load control line
     intflab.cb.reset_n       <= 1'b0;          // assert reset_n (active low)
     repeat (2) @intflab.cb;     // hold in reset for 2 clock cycles
-    intflab.cb.reset_n        = 1'b1;          // deassert reset_n (active low)
+    intflab.cb.reset_n        <= 1'b1;          // deassert reset_n (active low)
 
     $display("\nWriting values to register stack...");
-    @intflab.cb intflab.load_en = 1'b1;  // enable writing to register
-    repeat (3) begin
-      @(posedge intflab.cb.clk) randomize_transaction;
-      @(negedge intflab.cb.clk) print_transaction;
+    @intflab.cb intflab.cb.load_en <= 1'b1;  // enable writing to register
+    repeat (10) begin
+      @intflab.cb randomize_transaction;
+      @intflab.cb print_transaction;
     end
-    @intflab.cb intflab.load_en = 1'b0;  // turn-off writing to register
+    @intflab.cb intflab.cb.load_en <= 1'b0;  // turn-off writing to register
 
     // read back and display same three register locations
     $display("\nReading back the same register locations written...");
-    for (int i=0; i<=2; i++) begin
+//    for (int i=10; i>=0; i--) begin
       // later labs will replace this loop with iterating through a
       // scoreboard to determine which addresses were written and
+      repeat(10) begin
+        @intflab.cb intflab.cb.read_pointer <= $unsigned($random)%10;
       // the expected values to be read back
-     @intflab.cb intflab.read_pointer = i;
-      @(negedge intflab.cb.clk) print_results;
+    // @intflab.cb intflab.cb.read_pointer <= i;
+      @intflab.cb  print_results;
     end
 
      @intflab.cb ;
+    
     $display("\n***********************************************************");
     $display(  "***  THIS IS NOT A SELF-CHECKING TESTBENCH (YET).  YOU  ***");
     $display(  "***  NEED TO VISUALLY VERIFY THAT THE OUTPUT VALUES     ***");
     $display(  "***  MATCH THE INPUT VALUES FOR EACH REGISTER LOCATION  ***");
     $display(  "***********************************************************\n");
+    $display(  "**************************FOOTER***************************\n");
+
     $finish;
   end
 
@@ -79,7 +85,7 @@ module instr_register_test (tb_ifc.TEST intflab);  // interface port
 
   function void print_results;
     $display("Read from register location %0d: ", intflab.cb.read_pointer);
-    $display("  opcode = %0d (%s)", intflab.cb.instruction_word.opc, intflab.cb.instruction_word.opc.name);
+    $display("  opcode = %0d (%s)", intflab.cb.instruction_word.opc, intflab.cb.instruction_word.opc.name);//accesam semnal din package (intra in test deoarece e input
     $display("  operand_a = %0d",   intflab.cb.instruction_word.op_a);
     $display("  operand_b = %0d\n", intflab.cb.instruction_word.op_b);
   endfunction: print_results

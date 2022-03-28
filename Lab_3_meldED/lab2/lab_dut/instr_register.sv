@@ -5,7 +5,8 @@
  * the option:  +define+FORCE_LOAD_ERROR
  *
  **********************************************************************/
-
+//De adaugat in package de instructionword un semnal numit result. tipul e def de noi. in dut in fc de ce tip de opcode de facut operatia corespunzatoare
+//un switch in case avem un tip de operatie si result
 module instr_register
 import instr_register_pkg::*;  // user-defined types are defined in instr_register_pkg.sv
 (input  logic          clk,
