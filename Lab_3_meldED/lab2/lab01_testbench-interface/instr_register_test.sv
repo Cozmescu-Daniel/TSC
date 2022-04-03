@@ -88,6 +88,7 @@ module instr_register_test
     $display("  opcode = %0d (%s)", intflab.cb.instruction_word.opc, intflab.cb.instruction_word.opc.name);//accesam semnal din package (intra in test deoarece e input
     $display("  operand_a = %0d",   intflab.cb.instruction_word.op_a);
     $display("  operand_b = %0d\n", intflab.cb.instruction_word.op_b);
+    $display("  result    = %0d\n", intflab.cb.instruction_word.res);
   endfunction: print_results
 
 endmodule: instr_register_test
