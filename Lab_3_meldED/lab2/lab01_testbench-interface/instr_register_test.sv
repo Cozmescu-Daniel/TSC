@@ -4,15 +4,29 @@
  * with constrained random test generation, functional coverage, and
  * a scoreboard for self-verification.
  **********************************************************************/
+//virtual tb_ifc.TEST inflab;
 
 module instr_register_test 
   import instr_register_pkg::*;
   (
   tb_ifc.TEST intflab
   );
-  int seed = 555; //seed reprezinta valoarea initiala cu care se incepe randomizarea
+ // int seed = 555; //seed reprezinta valoarea initiala cu care se incepe randomizarea
 
-  initial begin//timp semnal zero
+
+
+
+
+  class first_test;
+  virtual tb_ifc.TEST intflab;
+
+function new(virtual tb_ifc.TEST manio) ; 
+ intflab=manio;
+endfunction;
+
+
+  //initial begin//timp semnal zero
+   task run();
     $display("\n\n***********************************************************");
     $display(    "***  THIS IS NOT A SELF-CHECKING TESTBENCH (YET).  YOU  ***");
     $display(    "***  NEED TO VISUALLY VERIFY THAT THE OUTPUT VALUES     ***");
@@ -46,6 +60,7 @@ module instr_register_test
         @intflab.cb intflab.cb.read_pointer <= $unsigned($random)%10;
       // the expected values to be read back
     // @intflab.cb intflab.cb.read_pointer <= i;
+    //functia are timp de simulare 0, taskul contine timp de simulare
       @intflab.cb  print_results;
     end
 
@@ -59,7 +74,10 @@ module instr_register_test
     $display(  "**************************FOOTER***************************\n");
 
     $finish;
-  end
+  //end
+  endtask 
+//inafara de initial begin intra tot in clasa, fc taskuri interfata si var interne
+
 
   function void randomize_transaction;
     // A later lab will replace this function with SystemVerilog
@@ -70,9 +88,9 @@ module instr_register_test
     // write_pointer values in a later lab
     //
     static int temp = 0;
-    intflab.cb.operand_a     <= $random(seed)%16;                 // between -15 and 15
-    intflab.cb.operand_b     <= $unsigned($random)%16;            // between 0 and 15
-    intflab.cb.opcode        <= opcode_t'($unsigned($random)%8);  // between 0 and 7, cast to opcode_t type
+    intflab.cb.operand_a     <= $urandom%16;                 // between -15 and 15
+    intflab.cb.operand_b     <= $unsigned($urandom)%16;            // between 0 and 15
+    intflab.cb.opcode        <= opcode_t'($unsigned($urandom)%8);  // between 0 and 7, cast to opcode_t type
     intflab.cb.write_pointer <= temp++;
   endfunction: randomize_transaction
 
@@ -91,4 +109,16 @@ module instr_register_test
     $display("  result    = %0d\n", intflab.cb.instruction_word.res);
   endfunction: print_results
 
+ 
+  
+    endclass 
+
+
+initial begin
+    first_test fs;
+    fs = new(intflab);
+    fs.run();
+   // run();
+  end
+  
 endmodule: instr_register_test
