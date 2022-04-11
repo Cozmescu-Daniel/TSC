@@ -19,11 +19,27 @@ module instr_register_test
 
   class first_test;
   virtual tb_ifc.TEST intflab;
+  parameter genOperations=100;
+
 
 function new(virtual tb_ifc.TEST manio) ; 
  intflab=manio;
 endfunction;
 
+
+covergroup cover_gr;
+coverpoint intflab.cb.operand_a{
+  bins op_a_values_neg={[-15:-1]};
+  bins op_a_values_zero={0};
+  bins op_a_values_pos={[1:15]};
+}
+coverpoint intflab.cb.operand_b{
+  bins op_b_values={[0:15]};
+}
+coverpoint intflab.cb.opcode{
+  bins op_code_values={[0:7]};
+}
+endgroup
 
   //initial begin//timp semnal zero
    task run();
@@ -45,7 +61,7 @@ endfunction;
 
     $display("\nWriting values to register stack...");
     @intflab.cb intflab.cb.load_en <= 1'b1;  // enable writing to register
-    repeat (10) begin
+    repeat (genOperations) begin
       @intflab.cb randomize_transaction;
       @intflab.cb print_transaction;
     end
@@ -56,7 +72,7 @@ endfunction;
 //    for (int i=10; i>=0; i--) begin
       // later labs will replace this loop with iterating through a
       // scoreboard to determine which addresses were written and
-      repeat(10) begin
+      repeat(genOperations) begin
         @intflab.cb intflab.cb.read_pointer <= $unsigned($random)%10;
       // the expected values to be read back
     // @intflab.cb intflab.cb.read_pointer <= i;
@@ -120,5 +136,6 @@ initial begin
     fs.run();
    // run();
   end
+  //random stabila pe thread urandom stabil pe clasa
   
 endmodule: instr_register_test
