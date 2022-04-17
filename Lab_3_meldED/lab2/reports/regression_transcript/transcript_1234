@@ -44,19 +44,19 @@
 # ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(36): Clocking block output #parent#.intflab.cb.operand_b is not legal in this
 # or another expression.
 #         Region: /top/test
-# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(115): Clocking block output intflab.cb.opcode is not legal in this
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(118): Clocking block output intflab.cb.opcode is not legal in this
 # or another expression.
 #         Region: /top/test
-# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(116): Clocking block output intflab.cb.operand_a is not legal in this
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(119): Clocking block output intflab.cb.operand_a is not legal in this
 # or another expression.
 #         Region: /top/test
-# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(117): Clocking block output intflab.cb.operand_b is not legal in this
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(120): Clocking block output intflab.cb.operand_b is not legal in this
 # or another expression.
 #         Region: /top/test
-# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(114): Clocking block output intflab.cb.write_pointer is not legal in this
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(117): Clocking block output intflab.cb.write_pointer is not legal in this
 # or another expression.
 #         Region: /top/test
-# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(121): Clocking block output intflab.cb.read_pointer is not legal in this
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(124): Clocking block output intflab.cb.read_pointer is not legal in this
 # or another expression.
 #         Region: /top/test
 # 
@@ -1283,5 +1283,5 @@
 # 
 # **************************FOOTER***************************
 # 
-# ** Note: $finish    : ../lab01_testbench-interface/instr_register_test.sv(92)
+# ** Note: $finish    : ../lab01_testbench-interface/instr_register_test.sv(95)
 #    Time: 2024 ns  Iteration: 2  Instance: /top/test

@@ -39,6 +39,10 @@ coverpoint intflab.cb.operand_b{
 coverpoint intflab.cb.opcode{
   bins op_code_values={[0:7]};
 }
+//tema
+coverpoint intflab.cb.res{
+bins results_values={[0:63]};
+}
 endgroup
 
   //initial begin//timp semnal zero
@@ -64,6 +68,7 @@ endgroup
     repeat (genOperations) begin
       @intflab.cb randomize_transaction;
       @intflab.cb print_transaction;
+      cover_gr.sample();
     end
     @intflab.cb intflab.cb.load_en <= 1'b0;  // turn-off writing to register
 
@@ -78,6 +83,7 @@ endgroup
     // @intflab.cb intflab.cb.read_pointer <= i;
     //functia are timp de simulare 0, taskul contine timp de simulare
       @intflab.cb  print_results;
+      cover_gr.sample();
     end
 
      @intflab.cb ;
