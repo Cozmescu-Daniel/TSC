@@ -19,31 +19,32 @@ module instr_register_test
 
   class first_test;
   virtual tb_ifc.TEST intflab;
-  parameter genOperations=100;
+  parameter genOperations=300;
 
-
-function new(virtual tb_ifc.TEST manio) ; 
- intflab=manio;
-endfunction;
 
 
 covergroup cover_gr;
-coverpoint intflab.cb.operand_a{
-  bins op_a_values_neg={[-15:-1]};
+OP_Acover:coverpoint intflab.cb.operand_a{
+  bins op_a_values_neg[7]={[-15:-1]};
   bins op_a_values_zero={0};
-  bins op_a_values_pos={[1:15]};
+  bins op_a_values_pos[]={[1:15]};
 }
-coverpoint intflab.cb.operand_b{
-  bins op_b_values={[0:15]};
+OP_Bcover:coverpoint intflab.cb.operand_b{
+  bins op_b_values[]={[0:15]};
 }
-coverpoint intflab.cb.opcode{
-  bins op_code_values={[0:7]};
+OP_CODEcover:coverpoint intflab.cb.opcode{
+  bins op_code_values[]={[0:7]};
 }
 //tema
-coverpoint intflab.cb.res{
-bins results_values={[0:63]};
+REScover:coverpoint intflab.cb.instruction_word.res{
+bins results_values[]={[-225:225]};
 }
 endgroup
+
+function new(virtual tb_ifc.TEST manio) ; 
+ intflab=manio;
+ cover_gr=new();
+endfunction;
 
   //initial begin//timp semnal zero
    task run();
@@ -110,7 +111,7 @@ endgroup
     // write_pointer values in a later lab
     //
     static int temp = 0;
-    intflab.cb.operand_a     <= $urandom%16;                 // between -15 and 15
+    intflab.cb.operand_a     <= $signed($urandom)%16;                 // between -15 and 15
     intflab.cb.operand_b     <= $unsigned($urandom)%16;            // between 0 and 15
     intflab.cb.opcode        <= opcode_t'($unsigned($urandom)%8);  // between 0 and 7, cast to opcode_t type
     intflab.cb.write_pointer <= temp++;

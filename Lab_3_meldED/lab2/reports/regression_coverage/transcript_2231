@@ -1,0 +1,34 @@
+# $%1 
+# 1
+# Model Technology ModelSim SE vlog 6.6d Compiler 2010.11 Nov  1 2010
+# -- Compiling package instr_register_pkg
+# -- Compiling module instr_register
+# -- Importing package instr_register_pkg
+# -- Compiling module instr_register_test
+# -- Compiling interface tb_ifc
+# -- Compiling module top
+# 
+# Top level modules:
+# 	top
+# vsim +notimingchecks +nowarnTSCALE -sva -nocoverage -quiet -sv_seed 2231 -novopt top 
+# Refreshing C:\Users\danie\Desktop\TSC\Lab_3_meldED\lab2\sim\work.instr_register_pkg
+# Refreshing C:\Users\danie\Desktop\TSC\Lab_3_meldED\lab2\sim\work.top
+# Refreshing C:\Users\danie\Desktop\TSC\Lab_3_meldED\lab2\sim\work.tb_ifc
+# Refreshing C:\Users\danie\Desktop\TSC\Lab_3_meldED\lab2\sim\work.instr_register_test
+# Refreshing C:\Users\danie\Desktop\TSC\Lab_3_meldED\lab2\sim\work.instr_register
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(39): Clocking block output #parent#.intflab.cb.opcode is not legal in this
+# or another expression.
+#         Region: /top/test
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(31): Clocking block output #parent#.intflab.cb.operand_a is not legal in this
+# or another expression.
+#         Region: /top/test
+# ** Warning: (vsim-8441) ../lab01_testbench-interface/instr_register_test.sv(36): Clocking block output #parent#.intflab.cb.operand_b is not legal in this
+# or another expression.
+#         Region: /top/test
+# ** Fatal: (vsim-8274) ../lab01_testbench-interface/instr_register_test.sv(42): Virtual interface elem. 'res' not found in 'cb'.
+#    Time: 0 ns  Iteration: 0  Instance: /top/test File: ../lab01_testbench-interface/instr_register_test.sv
+# FATAL ERROR while loading design
+# Error loading design
+# Error: Error loading design 
+#        Pausing macro execution 
+# MACRO ./run.do PAUSED at line 23
