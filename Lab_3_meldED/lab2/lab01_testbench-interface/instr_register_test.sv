@@ -19,7 +19,7 @@ module instr_register_test
 
   class first_test;
   virtual tb_ifc.TEST intflab;
-  parameter genOperations=300;
+  parameter genOperations=5;
 
 
 
@@ -41,7 +41,7 @@ bins results_values[]={[-225:225]};
 }
 endgroup
 
-function new(virtual tb_ifc.TEST manio) ; 
+function new(virtual tb_ifc.TEST manio) ; //constructor 
  intflab=manio;
  cover_gr=new();
 endfunction;
@@ -56,7 +56,7 @@ endfunction;
     $display(  "**************************HEADER***************************\n");
 //Dif intre task si fc, in task se pot pune valori temporale (@ posedge etc)
 
-    $display("\nReseting the instruction register...");
+    $display("\nReseting the instruction register...");//initializare + reset de dut
     intflab.cb.write_pointer  <= 5'h00;         // initialize write pointer
     intflab.cb.read_pointer   <= 5'h1F;         // initialize read pointer
     intflab.cb.load_en        <= 1'b0;          // initialize load control line
@@ -64,6 +64,7 @@ endfunction;
     repeat (2) @intflab.cb;     // hold in reset for 2 clock cycles
     intflab.cb.reset_n        <= 1'b1;          // deassert reset_n (active low)
 
+//ne pune valori pt a fi procesate op a op b op c
     $display("\nWriting values to register stack...");
     @intflab.cb intflab.cb.load_en <= 1'b1;  // enable writing to register
     repeat (genOperations) begin
@@ -78,8 +79,8 @@ endfunction;
 //    for (int i=10; i>=0; i--) begin
       // later labs will replace this loop with iterating through a
       // scoreboard to determine which addresses were written and
-      repeat(genOperations) begin
-        @intflab.cb intflab.cb.read_pointer <= $unsigned($random)%10;
+      repeat(genOperations) begin//itereaza prin valorile salvate si print rezultat
+        @intflab.cb intflab.cb.read_pointer <= $unsigned($random)%10;//read pointer e adresa uunde sunt localizate valorile de mai sus
       // the expected values to be read back
     // @intflab.cb intflab.cb.read_pointer <= i;
     //functia are timp de simulare 0, taskul contine timp de simulare
@@ -102,7 +103,7 @@ endfunction;
 //inafara de initial begin intra tot in clasa, fc taskuri interfata si var interne
 
 
-  function void randomize_transaction;
+  function void randomize_transaction;//adauga valori random in memorie
     // A later lab will replace this function with SystemVerilog
     // constrained random values
     //
@@ -117,14 +118,14 @@ endfunction;
     intflab.cb.write_pointer <= temp++;
   endfunction: randomize_transaction
 
-  function void print_transaction;
+  function void print_transaction;//printeaza valorile
     $display("Writing to register location %0d: ", intflab.cb.write_pointer);
     $display("  opcode = %0d (%s)", intflab.cb.opcode, intflab.cb.opcode.name);
     $display("  operand_a = %0d",   intflab.cb.operand_a);
     $display("  operand_b = %0d\n", intflab.cb.operand_b);
   endfunction: print_transaction
 
-  function void print_results;
+  function void print_results;//printeaza rezultatul
     $display("Read from register location %0d: ", intflab.cb.read_pointer);
     $display("  opcode = %0d (%s)", intflab.cb.instruction_word.opc, intflab.cb.instruction_word.opc.name);//accesam semnal din package (intra in test deoarece e input
     $display("  operand_a = %0d",   intflab.cb.instruction_word.op_a);
@@ -138,9 +139,9 @@ endfunction;
 
 
 initial begin
-    first_test fs;
-    fs = new(intflab);
-    fs.run();
+    first_test fs; //clasa first_test obiect fs ( clasa)
+    fs = new(intflab); //am atribuit interfata obiectului
+    fs.run();//apelam taskul de run
    // run();
   end
   //random stabila pe thread urandom stabil pe clasa

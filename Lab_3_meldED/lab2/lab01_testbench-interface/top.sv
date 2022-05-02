@@ -12,7 +12,7 @@ module top;
   logic clk;
   logic test_clk;
 
- tb_ifc intflab (.clk(test_clk));
+ tb_ifc intflab (.clk(test_clk));//instantiez interfata
  instr_register_test test (.intflab(intflab));
   // instantiate design and connect ports
   instr_register dut (

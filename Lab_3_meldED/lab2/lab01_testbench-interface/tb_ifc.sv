@@ -16,8 +16,8 @@ interface tb_ifc (input logic clk);
   operand_t      operand_a, operand_b;
   address_t      write_pointer, read_pointer;
   instruction_t  instruction_word;
-
-clocking cb @( clk);
+//inainte de clocking block semanelele erau stimulate fara a tine cont de ceas
+clocking cb @( clk);//sincronizeaza semnalele de mai jos cu clockul
  output           load_en;
  output           reset_n;
  output       operand_a;
@@ -29,7 +29,7 @@ clocking cb @( clk);
 
 endclocking
 
-modport TEST (clocking cb);
+modport TEST (clocking cb); //ne da directia semnalelor prestabilite
 
   // instantiate testbench and connect ports
   
